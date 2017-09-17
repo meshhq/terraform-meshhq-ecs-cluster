@@ -17,3 +17,11 @@ resource "aws_subnet" "mesh-vpc-subnet2" {
         Name = "mesh-vpc-subnet"
     }
 }
+
+output "subnet1-id" {
+  value = "${aws_subnet.mesh-vpc-subnet1.id}"
+}
+
+output "subnet2-id" {
+  value = "${aws_subnet.mesh-vpc-subnet2.id}"
+}

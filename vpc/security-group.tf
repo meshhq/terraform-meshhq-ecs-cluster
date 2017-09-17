@@ -22,3 +22,7 @@ resource "aws_security_group" "mesh-vpc-security-group" {
         Name = "mesh-vpc-security-group"
     }
 }
+
+output "security-group-id" {
+  value = "${aws_security_group.mesh-vpc-security-group.id}"
+}

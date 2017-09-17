@@ -5,10 +5,10 @@ module "vpc" {
 module "ec2" {
     source = "./ec2"
 
-    cluster-name = "kevin-ecs-cluster"
-    security-group-id = "sg-e3882790"
-    subnet-id-1 = "subnet-cf5c7595"
-    subnet-id-2 = "subnet-9825d0d3"
+    cluster-name        = "kevin-ecs-cluster"
+    security-group-id   = "${module.vpc.security-group-id}"
+    subnet-id-1         = "${module.vpc.subnet1-id}"
+    subnet-id-2         = "${module.vpc.subnet2-id}"
 }
 
 module "ecs" {
