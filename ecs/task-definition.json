@@ -1,0 +1,40 @@
+[
+    {
+        "environment": [],
+        "name": "simple-app",
+        "image": "kcoleman731/amazon-ecs-sample",
+        "cpu": 10,
+        "memory": 500,
+        "portMappings": [
+            {
+                "containerPort": 80,
+                "hostPort": 80
+            }
+        ],
+        "entryPoint": [
+            "/usr/sbin/apache2",
+            "-D",
+            "FOREGROUND"
+        ],
+        "essential": true
+    },
+    {
+        "name": "busybox",
+        "image": "busybox",
+        "cpu": 10,
+        "memory": 500,
+        "volumesFrom": [
+        {
+            "sourceContainer": "simple-app"
+        }
+        ],
+        "entryPoint": [
+            "sh",
+            "-c"
+        ],
+        "command": [
+            "/bin/sh -c \"while true; do /bin/date > /var/www/my-vol/date; sleep 1; done\""
+        ],
+        "essential": false
+    }
+]
