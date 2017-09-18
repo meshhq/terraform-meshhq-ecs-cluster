@@ -6,3 +6,7 @@ resource "aws_vpc" "mesh-vpc" {
     Name = "mesh-vpc"
   }
 }
+
+output "id" {
+  value = "${aws_vpc.mesh-vpc.id}"
+}
