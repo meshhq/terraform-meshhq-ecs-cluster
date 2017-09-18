@@ -1,3 +1,7 @@
+provider "aws" {
+  region = "us-east-1"
+}
+
 module "vpc" {
     source = "./vpc"
 }
@@ -15,4 +19,8 @@ module "ecs" {
     source = "./ecs"
 
     cluster-name = "kevin-ecs-cluster"
+}
+
+
+resource "aws_elb" "user_data" {
 }
