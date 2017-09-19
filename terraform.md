@@ -1,6 +1,6 @@
 # Automating ECS Deployments with Terraform
 
-We make liberal use of AWS's Elastic Container Service at Mesh. Wether we are standing up a clusters for one of our consulting customers or one of our in house products, we interact with the service on a near daily basis.
+We make liberal use of AWS's Elastic Container Service at Mesh. Wether we are standing up a cluster for one of our consulting customers or one of our in house products, we interact with the service on a near daily basis.
 
 As the AWS marketing page describes, ECS is:
 
@@ -12,13 +12,15 @@ The operative word here being "Easy". While we love the robustness, reliability 
 
 We are always on the lookout for opportunities to build tooling that will allow us to automate difficult, repetitive, and/or error prone tasks. Tools have the potential to save developers significant amounts of time and increase efficiency. We get to pass those savings on to our customers as well.
 
-Deploying an ECS Cluster is indeed a difficult, repetitive and error prone process. As such it was a perfect candidate for automation via tooling. To build this tooling, we leveraged one of our favorite DevOps frameworks, `Terraform`.
+Deploying an ECS Cluster is indeed a difficult, repetitive and error prone process. As such, the process was a perfect candidate for automation via tooling. To build this tooling, we leveraged one of our favorite DevOps frameworks, `Terraform`.
 
 ## Configuration with Terraform 
 
-As Terraform states on their website, the tool allows you to "safely and predictably create, change, and improve production infrastructure." It also allows us to avoid the AWS dashboard ;). 
+As Terraform states on their website, the tool allows you to "safely and predictably create, change, and improve production infrastructure." 
 
-When we deploy ECS Clusters, they are typically configured in a simalar manner. This makes it very easy for us to express this infrastructure in configuration files with Terraform. Our typical configuration is as follows:
+In plain english, Terraform allows you to describe you infrastrucutre via configuration files. Once you have your configuration files in place, the terraform CLI then allows you to spin up your cloud resources from the command line. As an added bonus, it also allows us to avoid the AWS dashboard ;). 
+
+When we deploy ECS Clusters, they are typically configured in a simalar manner. This makes it very easy for us to express our default configuration with Terraform. Our typical configuration is as follows:
 
 * Cluster Instances - Min of 3, Max of 5
 * Load Balancing - Via an Application Load Balancer
@@ -30,13 +32,13 @@ https://github.com/meshhq/terraform-ecs-cluster
 
 ## Single Command Deployments
 
-We have an in house CLI that all of our developers use on a daily basis. We set out to build functionality that would allow us to deploy a docker image on a newly provisioned ECS Cluster with a single command. We achieved this via the following:
+We have an in house CLI that all of our developers use on a daily basis. So we set out to build functionality that would allow us to deploy a docker image on a newly provisioned ECS Cluster with a single command. We achieved this via the following:
 
 ```bash 
 $ mesh cluster deploy --name "mesh-docker-sample" --image "meshhq/sample-node-container"
 ```
 
-While this command looks simple to the consuming devloper, there is a ton going on underneath the hood here. The Mesh CLI is using Terraform to provision a bunch of AWS infrastructure in order to safeley and securely expose our cluster on the internet. Lets break it down.
+While this command looks simple to the consuming devloper, there is a ton going on underneath the hood. Lets break it down.
 
 ### IAM Roles
 
