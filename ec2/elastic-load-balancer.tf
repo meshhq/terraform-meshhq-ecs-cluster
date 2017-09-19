@@ -1,13 +1,11 @@
-variable "vpc-id" {}
-
-resource "aws_alb" "mesh-load-balancer" {
-    name                = "mesh-load-balancer"
+resource "aws_alb" "ecs-load-balancer" {
+    name                = "${var.load-balancer-name}"
     security_groups     = ["${var.security-group-id}"]
     subnets             = ["${var.subnet-id-1}", "${var.subnet-id-2}"]
 }
 
-resource "aws_alb_target_group" "mesh-target_group" {
-    name                = "mesh-target-group"
+resource "aws_alb_target_group" "ecs-target_group" {
+    name                = "${var.target-group-name}"
     port                = "80"
     protocol            = "HTTP"
     vpc_id              = "${var.vpc-id}"
@@ -24,13 +22,13 @@ resource "aws_alb_target_group" "mesh-target_group" {
     }
 }
 
-resource "aws_alb_listener" "mesh-alb-listener" {
-    load_balancer_arn = "${aws_alb.mesh-load-balancer.arn}"
+resource "aws_alb_listener" "alb-listener" {
+    load_balancer_arn = "${aws_alb.ecs-load-balancer.arn}"
     port              = "80"
     protocol          = "HTTP"
     
     default_action {
-        target_group_arn = "${aws_alb_target_group.mesh-target_group.arn}"
+        target_group_arn = "${aws_alb_target_group.ecs-target_group.arn}"
         type             = "forward"
     }
 }

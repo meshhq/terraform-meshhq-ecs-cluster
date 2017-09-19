@@ -13,7 +13,7 @@ module "vpc" {
 module "ec2" {
     source = "./ec2"
 
-    cluster-name            = "kevin-ecs-cluster"
+    cluster-name            = "${var.ecs-cluster-name}"
     vpc-id                  = "${module.vpc.id}"
     security-group-id       = "${module.vpc.security-group-id}"
     subnet-id-1             = "${module.vpc.subnet1-id}"
@@ -24,6 +24,6 @@ module "ec2" {
 module "ecs" {
     source = "./ecs"
 
-    cluster-name = "kevin-ecs-cluster"
+    cluster-name           = "${var.ecs-cluster-name}"
     ecs-service-role-arn   = "${module.iam.ecs-service-role-arn}"
 }
