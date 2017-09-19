@@ -1,17 +1,42 @@
 # Deploy an ECS Cluster with Terraform
-We are big fans of AWS at Mesh. We often are asked to deploy applications and services to a cloud provider with for our customers, and our go to cloud provider is in our own back yard.
 
-While we love the robustness, reliability and peace of mind that AWS brings, their developer dashboard can often leave developers scratching their heads and wondering why things are so difficult.
+We are often asked to deploy applications to a cloud provider on behalf of our customers. Fortunately for us, our go to cloud provider, AWS, is in our back yard. 
 
-At Mesh, we find every opportunity we can to build automation and tooling. Tools have the potential to save developers, and therefor our customers, significant amounts of time and build efficiency. One of the places we have invested the most in our tooling is our AWS tool chain.
+We typically deploy applications as docker containers on Elastic Container Service (ECS). 
 
-Earlier this year, we started working on the `Mesh` cli. This CLI is the toolkit that each of our developers has access to on a daily basis.
+## ELastic Container Service
 
-One of the things we are often asked to do for our customer is stand up environments for deploying docker containers. When asked to do this, we use Elastic Container Service.
+As the marketing page describes, 
 
-Although Elastic Container Service is a fantastic cluster management system, building and deploying a cluster is not a very straight forward proposition, even if you are a seasoned AWS developer who understands how to use the AWS dashboard. Because of this, we decided to build a tool that would automate the process of spinning up, deploying, and tearing down ECS clusters. To do so, we leveraged one of our favorite DevOps tools, `Terraform`.
+**ECS is a highly scalable, high performance container management service that supports Docker containers and allows you to easily run applications on a managed cluster of Amazon EC2 instances.**
+
+The operative word here being "Easy". While we love the robustness, reliability and peace of mind that ECS brings, standing up an ECS cluster for the first time is far from easy. As with many AWS services, the dashboard can often leave developers scratching their heads and wondering why things need to be so difficult.
+
+## Tooling to the resuce
+
+At Mesh, we are always on the lookout for opportunities to build tooling that allows us to automate difficulet, repetitive, and error prone tasks. Tools have the potential to save developers, and therefore our customers, significant amounts of time and build efficiency. 
+
+Standing up an ECS Cluster, along with all of the required resource from other AWS services, matches all three critiera. 
+
+We have invested heavily in building out our AWS toolchain, as we are interacting with the services on a daily basis. One of the tasks we hav process of spinning up, deploying, and tearing down ECS clusters. To do so, we leveraged one of our favorite DevOps tools, `Terraform`.
+
+## Configuration with Terraform 
+
+As Terraform states on their website, the tool allows you to "safely and predictably create, change, and improve production infrastructure." It also allows us to avoid the AWS dashboard ;). 
+
+When we deploy ECS Clusters for customers, they are typically configured in a simalar manner. This makes it very easy for us to express this infrastructure in configuration files with Terraform. Our typical configuration is as follows
+
+* Cluster Instances 
+* Load Balancing 
+* Security 
+
+Our default Terraform configuration files for provisioning an ECS instance can be found in the following repository:
+
+https://github.com/meshhq/terraform-ecs-cluster
 
 ## Deploying an ECS Cluster
+
+We recently added functionality to our in house, Mesh CLI In order to automate ECS provisioing via our Terraform configuration files. Our CLI wraps calls to terraform in order to deploy infrastructure. 
 
 We can deploy a complete ECS cluster with one command.
 
@@ -19,9 +44,11 @@ We can deploy a complete ECS cluster with one command.
 $ mesh cluster deploy --name "mesh-docker-sample" --image "meshhq/sample-node-container"
 ```
 
-By default this command spins up a 3 instance cluster, that is load balance via an Application Load balancer. Underneath the hood, the command is provisioning a bunch of infrastructure. Lets break it down.
+## Breaking It Down 
 
-## Building IAM Roles
+By default this command spins up a 3 instance cluster, that is load balanced via an Application Load balancer. Underneath the hood, the command is provisioning a bunch of infrastructure. Lets break it down.
+
+### IAM Roles
 
 Before deploying an ECS Cluster, we need create two different IAM roles, and then attach specific policies to each of these roles. The roles are the following:
 
@@ -96,7 +123,7 @@ output "ecs-service-role-arn" {
 }
 ```
 
-## Building a VPC
+### Virtual Private Cloud
 
 Next we need to provision a number of [Virtual Private Cloud (VPC)](http://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/VPC_Introduction.html) resources. This involves the following:
 
@@ -164,7 +191,7 @@ output "subnet2-id" {
 }
 ```
 
-## Deploying our ECS Cluster
+### Elastic Container Service
 
 Once we have our VPC setup, its time to create an ECS Cluster. In order to create an ECS cluster, we provision the following:
 
@@ -212,7 +239,7 @@ resource "aws_ecs_task_definition" "mesh-sample-definition" {
 }
 ```
 
-## Deploying EC2 Instances
+## Elastic Compute Instances 
 
 Once our ECS Cluster is configured, the last step is to deploy some actual EC2 instances into our cluster. We do this by configuring an Auto Scaling Group with an Elastic Load Balancer. This involves the following:
 
