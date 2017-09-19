@@ -15,8 +15,8 @@ Although Elastic Container Service is a fantastic cluster management system, bui
 
 We can deploy a complete ECS cluster with one command.
 
-```
-mesh cluster deploy --name "mesh-docker-sample" --image "meshhq/sample-node-container"
+```bash 
+$ mesh cluster deploy --name "mesh-docker-sample" --image "meshhq/sample-node-container"
 ```
 
 By default this command spins up a 3 instance cluster, that is load balance via an Application Load balancer. Underneath the hood, the command is provisioning a bunch of infrastructure. Lets break it down.
@@ -30,15 +30,15 @@ Before deploying an ECS Cluster, we need create two different IAM roles, and the
 
 We can provision these roles via the Mesh CLI.
 
-```
-mesh iam build --ecs
+```bash
+$ mesh iam build --ecs
 ```
 
 Underneath the hood, the Mesh CLI is generating these roles via Terraform config files.
 
 [ecs-instance-role.tf](https://github.com/meshhq/terraform-ecs-cluster/blob/master/iam/ecs-instance-role.tf)
 
-```
+```tf
 data "aws_iam_policy_document" "ecs-instance-policy" {
     statement {
         actions = ["sts:AssumeRole"]
@@ -68,7 +68,7 @@ output "ecs-instance-role-id" {
 
 [ecs-service-role.tf](https://github.com/meshhq/terraform-ecs-cluster/blob/master/iam/ecs-service-role.tf)
 
-```
+```tf
 data "aws_iam_policy_document" "ecs-service-policy" {
     statement {
         actions = ["sts:AssumeRole"]
@@ -109,15 +109,15 @@ Next we need to provision a number of [Virtual Private Cloud (VPC)](http://docs.
 
 We can provision these VPC components via the following command.
 
-```
-mesh vpc build --name "mesh"
+```bash
+$ mesh vpc build --name "mesh"
 ```
 
 Underneath the hood, the Mesh CLI is generating the following via Terraform config files.
 
 ### vpc.tf
 
-```
+```tf
 resource "aws_vpc" "mesh-vpc" {
   cidr_block = "10.0.0.0/16"
   enable_dns_hostnames = "true"
@@ -134,7 +134,7 @@ output "id" {
 
 ### subnet.tf
 
-```
+```tf
 resource "aws_subnet" "mesh-vpc-subnet1" {
     vpc_id     = "${aws_vpc.mesh-vpc.id}"
     cidr_block = "10.0.0.0/24"
@@ -174,14 +174,14 @@ Once we have our VPC setup, its time to create an ECS Cluster. In order to creat
 
 We can provision these ECS components via the following command.
 
-```
-mesh ecs build --name "mesh-docker"
+```bash
+$ mesh ecs build --name "mesh-docker"
 ```
 Underneath the hood, the Mesh CLI is generating the following via Terraform config files.
 
 [cluster.tf](https://github.com/meshhq/terraform-ecs-cluster/blob/master/ecs/cluster.tf)
 
-```
+```tf
 variable "cluster-name" {}
 
 resource "aws_ecs_cluster" "mesh-ecs-cluster" {
@@ -191,8 +191,7 @@ resource "aws_ecs_cluster" "mesh-ecs-cluster" {
 
 [service.tf](https://github.com/meshhq/terraform-ecs-cluster/blob/master/ecs/service.tf)
 
-```
-
+```tf
 variable "ecs-service-role-arn" {}
 
 resource "aws_ecs_service" "mesh-ecs-service" {
@@ -206,7 +205,7 @@ resource "aws_ecs_service" "mesh-ecs-service" {
 
 [task-definition.tf](https://github.com/meshhq/terraform-ecs-cluster/blob/master/ecs/task-definition.tf)
 
-```
+```tf
 resource "aws_ecs_task_definition" "mesh-sample-definition" {
   family                = "mesh-sample-definition"
   container_definitions = "${file("./ecs/task-definition.json")}"
@@ -221,13 +220,13 @@ Once our ECS Cluster is configured, the last step is to deploy some actual EC2 i
 * [Launch Configuration](http://docs.aws.amazon.com/autoscaling/latest/userguide/LaunchConfiguration.html)
 * [Application Load Balancer](http://docs.aws.amazon.com/elasticloadbalancing/latest/application/introduction.html)
 
-```
-mesh ec2 deploy
+```bash
+$ mesh ec2 deploy
 ```
 
 [autoscaling-group.tf](https://github.com/meshhq/terraform-ecs-cluster/blob/master/ec2/autoscaling-group.tf)
 
-```
+```tf
 variable "subnet-id-1" {}
 variable "subnet-id-2" {}
 
@@ -246,7 +245,7 @@ resource "aws_autoscaling_group" "mesh-ecs-asg" {
 
 [launch-configuration.tf](https://github.com/meshhq/terraform-ecs-cluster/blob/master/ec2/launch-configuration.tf)
 
-```
+```tf
 variable "cluster-name" {}
 variable "security-group-id" {}
 variable "ecs-instance-role" {}
@@ -272,7 +271,7 @@ resource "template_file" "user_data" {
 ```
 [application-load-balanacer.tf](https://github.com/meshhq/terraform-ecs-cluster/blob/master/ec2/elastic-load-balancer.tf)
 
-```
+```tf
 variable "vpc-id" {}
 
 resource "aws_alb" "mesh-load-balancer" {
