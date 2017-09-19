@@ -1,6 +1,6 @@
 # Automating ECS Deployments with Terraform
 
-WE make liveral use of AWS's Elastic Container Service at Mesh. Wether we are standing up a clusters for one of our consulting customers or one of our in house products, we interact with the service on a near daily basis.
+We make liberal use of AWS's Elastic Container Service at Mesh. Wether we are standing up a clusters for one of our consulting customers or one of our in house products, we interact with the service on a near daily basis.
 
 As the AWS marketing page describes, ECS is:
 
