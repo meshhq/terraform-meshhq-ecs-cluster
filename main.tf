@@ -25,5 +25,5 @@ module "ecs" {
     source = "./ecs"
 
     cluster-name = "kevin-ecs-cluster"
-    ecs-service-role-arn   = "${module.iam.ecs-instance-role-arn}"
+    ecs-service-role-arn   = "${module.iam.ecs-service-role-arn}"
 }

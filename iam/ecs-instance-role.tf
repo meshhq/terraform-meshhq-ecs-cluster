@@ -21,6 +21,6 @@ resource "aws_iam_role_policy_attachment" "ecs-instance-role-attachment" {
     policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceforEC2Role"
 }
 
-output "ecs-instance-role-id" {
-  value = "${aws_security_group.mesh-vpc-security-group.id}"
+output "ecs-instance-role-name" {
+  value = "${aws_iam_role.ecs-instance-role.name}"
 }
