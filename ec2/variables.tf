@@ -8,6 +8,7 @@ variable "subnet-id-2" {}
 variable "security-group-id" {}
 variable "cluster-name" {}
 variable "ecs-instance-role-name" {}
+variable "ecs-instance-profile-name" {}
 
 //
 // ASG Variables
@@ -25,12 +26,12 @@ variable "max-instance-size" {
 
 variable "min-instance-size" {
     description = "The name for the autoscaling group for the cluster."
-    default     = 3
+    default     = 2
 }
 
 variable "desired-capacity" {
     description = "The name for the autoscaling group for the cluster."
-    default     = 2
+    default     = 3
 }
 
 variable "health-check-grace-period" {

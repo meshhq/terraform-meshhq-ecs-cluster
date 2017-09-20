@@ -9,3 +9,6 @@ variable "ecs-service-role-arn" {
 variable "ecs-service-name" {
     default = "mesh-ecs-service"
 }
+
+variable "ecs-load-balancer-name" {}
+variable "ecs-target-group-arn" {}
