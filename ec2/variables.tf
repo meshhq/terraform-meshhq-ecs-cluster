@@ -1,18 +1,19 @@
-//
+//----------------------------------------------------------------------
 // Shared Variables
-//
+//----------------------------------------------------------------------
 
 variable "vpc-id" {}
 variable "subnet-id-1" {}
 variable "subnet-id-2" {}
 variable "security-group-id" {}
-variable "cluster-name" {}
+variable "ecs-cluster-name" {}
 variable "ecs-instance-role-name" {}
 variable "ecs-instance-profile-name" {}
+variable "ecs-key-pair-name" {}
 
-//
-// ASG Variables
-//
+//----------------------------------------------------------------------
+// Autoscaling Group Variables
+//----------------------------------------------------------------------
 
 variable "autoscaling-group-name" {
     description = "The name for the autoscaling group for the cluster."
@@ -39,9 +40,9 @@ variable "health-check-grace-period" {
     default     = 300
 }
 
-//
-// ELB Variables
-//
+//----------------------------------------------------------------------
+// Application Load Balancer Variables
+//----------------------------------------------------------------------
 
 variable "load-balancer-name" {
     description = "The name for the autoscaling group for the cluster."
@@ -53,9 +54,9 @@ variable "target-group-name" {
     default     = "mesh-ecs-target-group"
 }
 
-//
+//----------------------------------------------------------------------
 // Launch Configuration Variables
-//
+//----------------------------------------------------------------------
 
 variable "launch-configuration-name" {
     description = "The name for the autoscaling group for the cluster."
