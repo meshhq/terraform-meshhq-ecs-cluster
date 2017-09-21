@@ -18,11 +18,11 @@ Deploying an ECS Cluster is indeed a difficult, repetitive and error prone proce
 
 As Terraform states on their website, the tool allows you to "safely and predictably create, change, and improve production infrastructure." 
 
-In plain english, Terraform allows you to describe you infrastrucutre via configuration files. Once you have your configuration files in place, the terraform CLI then allows you to spin up your cloud resources from the command line. As an added bonus, it also allows us to avoid the AWS dashboard ;). 
+In plain english, Terraform allows you to describe your infrastrucutre via configuration files. Once you have your configuration files in place, the `Terraform` CLI allows you to spin up your cloud resources from the command line. As an added bonus, it also helps us to avoid the AWS dashboard ;). 
 
 When we deploy ECS Clusters, they are typically configured in a simalar manner. This makes it very easy for us to express our default configuration with Terraform. Our typical configuration is as follows:
 
-* Cluster Instances - Min of 3, Max of 5
+* Cluster Instances - Min of 2, Max of 5, Desired of 3
 * Load Balancing - Via an Application Load Balancer
 * Security - Ingress on 80 (HTTP), 443 (HTTPS) and 22 (SSH), All Egress.
 
@@ -32,7 +32,7 @@ https://github.com/meshhq/terraform-ecs-cluster
 
 ## Single Command Deployments
 
-We have an in house CLI that all of our developers use on a daily basis. So we set out to build functionality that would allow us to deploy a docker image on a newly provisioned ECS Cluster with a single command. We achieved this via the following:
+When we set out to build our ECS tooling, we had a single goal in mind. We to to be able to deploy a docker image on a newly provisioned ECS Cluster with a single command. We built this functionality it on our in-house, `Mesh` CLI via the following command:
 
 ```bash 
 $ mesh cluster deploy --name "mesh-docker-sample" --image "meshhq/sample-node-container"
