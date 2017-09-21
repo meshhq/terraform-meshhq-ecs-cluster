@@ -21,7 +21,7 @@ resource "aws_network_acl" "mesh-vpc-network-acl" {
     }
 
     tags {
-        Name = "mesh-vpc-network-acl"
+        Name = "${var.resource-prefix}-network-acl"
     }
 }
 

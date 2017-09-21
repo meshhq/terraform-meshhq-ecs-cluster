@@ -1,3 +1,7 @@
 resource "aws_ecs_cluster" "mesh-ecs-cluster" {
-    name = "${var.ecs-cluster-name}"
+    name = "${var.resource-prefix}-cluster"
+}
+
+output "cluster-name" {
+    value = "${aws_ecs_cluster.mesh-ecs-cluster.name}"
 }

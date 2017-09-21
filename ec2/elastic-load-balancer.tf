@@ -1,11 +1,11 @@
 resource "aws_alb" "ecs-load-balancer" {
-    name                = "${var.load-balancer-name}"
+    name                = "${var.resource-prefix}-load-balancer"
     security_groups     = ["${var.security-group-id}"]
     subnets             = ["${var.subnet-id-1}", "${var.subnet-id-2}"]
 }
 
 resource "aws_alb_target_group" "ecs-target_group" {
-    name                = "${var.target-group-name}"
+    name                = "${var.resource-prefix}-target-group"
     port                = "80"
     protocol            = "HTTP"
     vpc_id              = "${var.vpc-id}"

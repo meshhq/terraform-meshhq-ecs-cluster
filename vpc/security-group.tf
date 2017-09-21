@@ -1,5 +1,5 @@
 resource "aws_security_group" "mesh-vpc-security-group" {
-    name        = "mesh-vpc-security-group"
+    name        = "${var.resource-prefix}-security-group"
     description = "Allow HTTP, HTTPS, and SSH"
     vpc_id = "${aws_vpc.mesh-vpc.id}"
 

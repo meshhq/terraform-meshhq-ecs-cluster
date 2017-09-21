@@ -1,8 +1,8 @@
 resource "aws_ecs_service" "mesh-ecs-service" {
-  	name            = "${var.ecs-service-name}"
+  	name            = "${var.resource-prefix}-service"
   	iam_role        = "${var.ecs-service-role-arn}"
   	cluster         = "${aws_ecs_cluster.mesh-ecs-cluster.id}"
-  	task_definition = "${aws_ecs_task_definition.mesh-sample-definition.arn}"
+  	task_definition = "${aws_ecs_task_definition.mesh-task-definition.arn}"
   	desired_count   = 1
 
   	load_balancer {

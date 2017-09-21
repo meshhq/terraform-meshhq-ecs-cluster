@@ -4,7 +4,7 @@ resource "aws_subnet" "mesh-vpc-subnet1" {
     availability_zone = "us-east-1a"
 
     tags {
-        Name = "mesh-vpc-subnet"
+        Name = "${var.resource-prefix}-subnet1"
     }
 }
 
@@ -14,7 +14,7 @@ resource "aws_subnet" "mesh-vpc-subnet2" {
     availability_zone = "us-east-1b"
 
     tags {
-        Name = "mesh-vpc-subnet"
+        Name = "${var.resource-prefix}-subnet2"
     }
 }
 

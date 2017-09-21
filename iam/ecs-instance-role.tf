@@ -1,5 +1,5 @@
 resource "aws_iam_role" "ecs-instance-role" {
-    name                = "ecs-instance-role"
+    name                = "${var.resource-prefix}-instance-role"
     path                = "/"
     assume_role_policy  = "${data.aws_iam_policy_document.ecs-instance-policy.json}"
 }
